@@ -1,4 +1,6 @@
-nordcloud.json
+# GCP Keyfile
+key.json
+
 # Local .terraform directories
 **/.terraform/*
 
@@ -33,3 +35,18 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Latex ignores
+
+presentation/*.aux
+presentation/*.log
+presentation/*.nav
+presentation/*.pdf
+presentation/*.snm
+presentation/*.gz
+presentation/*.toc
+presentation/*.out
+
+
+
+
