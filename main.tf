@@ -12,16 +12,22 @@ resource "google_artifact_registry_repository" "notejam" {
 }
 
 resource "google_cloudbuild_trigger" "prod_trigger" {
+  name = "Production Trigger" 
+  description = "Run Build and Tests when master branch is tagged with semver tagging"
+
   trigger_template {
-    tag_name   = ".*"
+    tag_name   = "^v\d+\.\d+\.\d+-?.*$"
   }
 
   filename = "cloudbuild_prod.yaml"
 }
 
 resource "google_cloudbuild_trigger" "test_trigger" {
+  name        = "Testing Trigger"
+  description = "Run Build and Tests and deploy to internal testing environment when pushed to testing branch"
+
   trigger_template {
-    branch_name = "master"
+    branch_name = "^testing$"
     repo_name   = "notejam"
   }
 
@@ -29,8 +35,11 @@ resource "google_cloudbuild_trigger" "test_trigger" {
 }
 
 resource "google_cloudbuild_trigger" "dev_trigger" {
+  name        = "Development Trigger"
+  description = "Run Build and Tests but do not Deploy when pushed to any feature_X branch"
+
   trigger_template {
-    branch_name = "[^(?!.*master)].*"
+    branch_name = "^feature_.*$"
     repo_name   = "notejam"
   }
 
