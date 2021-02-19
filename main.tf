@@ -17,6 +17,7 @@ resource "google_cloudbuild_trigger" "prod_trigger" {
 
   trigger_template {
     tag_name   = "^v\\d+\\.\\d+\\.\\d+-?.*$"
+    repo_name  = "notejam"
   }
 
   filename = "cloudbuild_prod.yaml"
@@ -24,7 +25,7 @@ resource "google_cloudbuild_trigger" "prod_trigger" {
 
 resource "google_cloudbuild_trigger" "test_trigger" {
   name        = "Testing-Trigger"
-  description = "Run Build and Tests and deploy to internal testing environment when pushed to testing branch"
+  description = "Run Build and Tests and deploy to a private testing environment when pushed to testing branch"
 
   trigger_template {
     branch_name = "^testing$"
@@ -98,27 +99,14 @@ resource "google_sql_database" "database" {
   instance  = google_sql_database_instance.master.name
 }
 
+resource "google_sql_database" "database-test" {
+  name      = "notejam-test-db"
+  instance  = google_sql_database_instance.master.name
+}
+
 resource "google_sql_user" "users" {
   name     = var.db_username
   instance = google_sql_database_instance.master.name
   host     = ""
   password = var.db_password
 }
-
-# resource "google_cloud_run_service" "notejam" {
-#   name     = "notejam"
-#   location = "us-central1"
-
-#   template {
-#     spec {
-#       containers {
-#         image = "us-docker.pkg.dev/cloudrun/container/notejam"
-#       }
-#     }
-#   }
-
-#   traffic {
-#     percent         = 100
-#     latest_revision = true
-#   }
-# }

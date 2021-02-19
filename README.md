@@ -16,6 +16,7 @@ Before Terraform can work and deploy correctly, some GCP API's and Services shou
 * Cloud Run Admin API
 * Service Networking API
 * Serverless VPC Access API
+* Secret Manager APIs
 
 ## Todo's
 
